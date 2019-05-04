@@ -11,11 +11,16 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addItems } from '../actions/ItemActions';
+import PropTypes from 'prop-types'
 
 class ItemModal extends Component {
   state = {
     modal: false,
     name: ''
+   }
+
+   static propTypes = {
+     isAuth: PropTypes.bool
    }
 
   toggle = () => {this.setState({
@@ -41,11 +46,13 @@ onSubmit = (e) => {
   render() {
     return (
       <div>
+        { this.props.isAuth ? 
+        
         <Button
           color="dark"
           style={{marginBottom: '2rem'}}
           onClick={this.toggle}
-        >Add Item</Button>
+        >Add Item</Button> : <h4 className="mb-3 ml-4">Please login to manage items</h4>}
 
         <Modal
         isOpen={this.state.modal}
@@ -76,7 +83,8 @@ onSubmit = (e) => {
   }
 }
 const mapStateToProps = state => ({
-  item: state.item
+  item: state.item,
+  isAuth: state.auth.isAuth
 })
 
 export default connect(mapStateToProps, {addItems})(ItemModal)
